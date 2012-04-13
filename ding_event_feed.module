@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implementation of hook_views_plugins
+ */
+function ding_event_feed_views_plugins() {
+  return array(
+    'module' => 'views',
+    'style' => array(
+      'ding_atom' => array(
+        'title' => t('Ding event atom feed'),
+        'help' => t('Generates an Atom feed from a view.'),
+        'handler' => 'views_plugin_style_rss',
+        'theme' => 'ding_event_feed_atom',
+        'theme path' => drupal_get_path('module', 'ding_event_feed'),
+        'theme file' => 'ding_event_feed.theme.inc',
+        'uses row plugin' => TRUE,
+        'uses options' => TRUE,
+        'type' => 'feed',
+      ),
+    ),
+    'row' => array(
+      'ding_event_feed_row_atom' => array(
+        'title' => t('Ding event node atom feed'),
+        'help' => t('Display the node acording to ding event atom feed spec.'),
+        'handler' => 'ding_event_feed_plugin_row_node_atom',
+        'path' => drupal_get_path('module', 'ding_event_feed') . '/plugins',
+        'parent' => 'node_rss',
+        'theme' => 'ding_event_feed_row_atom',
+        'theme path' => drupal_get_path('module', 'ding_event_feed'),
+        'theme file' => 'ding_event_feed.theme.inc',
+        'base' => array('node'), // only works with 'node' as base.
+        'uses options' => TRUE,
+        'type' => 'feed',
+      ),
+    ),
+  );
+}

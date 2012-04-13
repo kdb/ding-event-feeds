@@ -1,0 +1,5 @@
+core = "6.x"
+dependencies[] = "views"
+description = "Add special handler to create a RSS feed for ding events with Views"
+name = "Ding event feed"
+package = "Ding!"
