@@ -95,7 +95,7 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
   }
 
   function render($row) {
-    $teaser_field_name = empty($this->options['ding_keywords']) ? 'field_teaser' : $this->options['ding_keywords'];
+    $teaser_field_name = empty($this->options['ding_teaser']) ? 'field_teaser' : $this->options['ding_teaser'];
     $image_field_name = empty($this->options['ding_image']) ? 'field_list_image' : $this->options['ding_image'];
     $date_field_name = empty($this->options['ding_image']) ? 'field_datetime' : $this->options['ding_date'];
     $entry_price_field_name = empty($this->options['ding_image']) ? 'field_entry_price' : $this->options['ding_entry_price'];
