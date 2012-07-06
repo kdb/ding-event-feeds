@@ -92,6 +92,14 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
       '#options' => $field_options,
       '#default_value' => $this->options['ding_entry_price'],
     );
+
+    $form['ding_library'] = array(
+      '#type' => 'select',
+      '#title' => t('Library'),
+      '#description' => t('Select field used for dingevent:institution element.'),
+      '#options' => $field_options,
+      '#default_value' => $this->options['ding_library'],
+    );
   }
 
   function render($row) {
@@ -99,6 +107,7 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
     $image_field_name = empty($this->options['ding_image']) ? 'field_list_image' : $this->options['ding_image'];
     $date_field_name = empty($this->options['ding_image']) ? 'field_datetime' : $this->options['ding_date'];
     $entry_price_field_name = empty($this->options['ding_image']) ? 'field_entry_price' : $this->options['ding_entry_price'];
+    $library_field_name = empty($this->options['ding_library']) ? 'field_library_ref' : $this->options['ding_library'];
 
     // For the most part, this code is taken from node_feed() in node.module
     global $base_url;
@@ -148,6 +157,16 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
       array('key' => 'updated', 'value' => gmdate('c', $node->changed)),
       array('key' => 'content', 'value' => $content, 'attributes' => array('type' => 'html')),
     );
+
+    // Add info about the library ref.
+    if (!empty($node->{$library_field_name}) && !empty($node->{$library_field_name}[0]['nid'])) {
+      $library = node_load($node->{$library_field_name}[0]['nid']);
+      $item->elements[] = array(
+        'key' => 'dingevent:institution',
+        'value' => check_plain($library->title),
+        'attributes' => array('id' => $library->nid),
+      );
+    }
 
     if (!empty($node->{$teaser_field_name}) && !empty($node->{$teaser_field_name}[0]['value'])) {
       $item->elements[] = array('key' => 'summary', 'value' => check_plain($node->{$teaser_field_name}[0]['value']));
