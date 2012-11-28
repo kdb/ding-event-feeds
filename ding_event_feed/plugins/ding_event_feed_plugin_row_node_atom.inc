@@ -10,8 +10,8 @@
  */
 class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
   // Basic properties that let the row style follow relationships.
-  var $base_table = 'node';
-  var $base_field = 'nid';
+  public $base_table = 'node';
+  public $base_field = 'nid';
 
   function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
@@ -25,7 +25,9 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
       '#default_value' => $this->options['item_length'],
     );
 
-    $options = array();
+    $options = array(
+      NULL => t('- None -'),
+    );
     $vocabs = taxonomy_get_vocabularies();
     foreach ($vocabs as $vid => $vocab) {
       $options[$vid] = $vocab->name;
@@ -56,7 +58,9 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
     );
 
     $fields = content_fields();
-    $field_options = array('' => t('Default'));
+    $field_options = array(
+      NULL => t('- None -'),
+    );
     foreach ($fields as $field_name => $field) {
       $field_options[$field_name] = $field_name . ' (' . $field['type'] . ')';
     }
@@ -74,7 +78,7 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
       '#title' => t('Image'),
       '#description' => t('Select field used for dingevent:image element.'),
       '#options' => $field_options,
-      '#default_value' => $this->options['ding_teaser'],
+      '#default_value' => $this->options['ding_image'],
     );
 
     $form['ding_date'] = array(
@@ -103,11 +107,11 @@ class ding_event_feed_plugin_row_node_atom extends views_plugin_row_node_rss {
   }
 
   function render($row) {
-    $teaser_field_name = empty($this->options['ding_teaser']) ? 'field_teaser' : $this->options['ding_teaser'];
-    $image_field_name = empty($this->options['ding_image']) ? 'field_list_image' : $this->options['ding_image'];
-    $date_field_name = empty($this->options['ding_image']) ? 'field_datetime' : $this->options['ding_date'];
-    $entry_price_field_name = empty($this->options['ding_image']) ? 'field_entry_price' : $this->options['ding_entry_price'];
-    $library_field_name = empty($this->options['ding_library']) ? 'field_library_ref' : $this->options['ding_library'];
+    $teaser_field_name = empty($this->options['ding_teaser']) ? '' : $this->options['ding_teaser'];
+    $image_field_name = empty($this->options['ding_image']) ? '' : $this->options['ding_image'];
+    $date_field_name = empty($this->options['ding_image']) ? '' : $this->options['ding_date'];
+    $entry_price_field_name = empty($this->options['ding_image']) ? '' : $this->options['ding_entry_price'];
+    $library_field_name = empty($this->options['ding_library']) ? '' : $this->options['ding_library'];
 
     // For the most part, this code is taken from node_feed() in node.module
     global $base_url;
